@@ -6,13 +6,19 @@ import ListSubheader from "@material-ui/core/ListSubheader";
 import Box from "@material-ui/core/Box";
 import Typography from "@material-ui/core/Typography";
 import { Link } from "react-router-dom";
+import { connect } from "react-redux";
 
 import FaceIcon from "@material-ui/icons/Face";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faUserCircle, faSignOutAlt } from "@fortawesome/free-solid-svg-icons";
-import { connect } from "react-redux";
 
-function UserInfoAreaBar({ isLoggedIn }) {
+import { logoutUser } from "../redux/actions/userActions";
+
+function UserInfoAreaBar({ logoutUser, isLoggedIn, user }) {
+  function onSignOut(event) {
+    logoutUser();
+  }
+
   let contents;
 
   if (isLoggedIn) {
@@ -22,7 +28,7 @@ function UserInfoAreaBar({ isLoggedIn }) {
           <FaceIcon fontSize="large" />
         </Box>
         <Box m="auto" alignItems="center" justifyContent="center">
-          <Typography variant="subtitle1">rodyce@gmail.com</Typography>
+          <Typography variant="subtitle1">{user.email}</Typography>
         </Box>
         <ListItem button>
           <ListItemIcon>
@@ -30,7 +36,7 @@ function UserInfoAreaBar({ isLoggedIn }) {
           </ListItemIcon>
           <ListItemText primary="Datos de perfil" />
         </ListItem>
-        <ListItem button>
+        <ListItem button onClick={onSignOut}>
           <ListItemIcon>
             <FontAwesomeIcon icon={faSignOutAlt} size="lg" />
           </ListItemIcon>
@@ -71,7 +77,12 @@ function mapStateToProps(state) {
 
   return {
     isLoggedIn,
+    user: state.user,
   };
 }
 
-export default connect(mapStateToProps)(UserInfoAreaBar);
+const mapDispatchToProps = {
+  logoutUser,
+};
+
+export default connect(mapStateToProps, mapDispatchToProps)(UserInfoAreaBar);

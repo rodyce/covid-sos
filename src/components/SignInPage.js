@@ -3,13 +3,13 @@ import { connect } from "react-redux";
 import SignInForm from "./SignInForm";
 import { loginUser } from "../redux/actions/userActions";
 
-function SignInPage(props) {
+function SignInPage({ loginUser, history, ...props }) {
   const [user, setUser] = useState({ ...props.user });
 
   function handleSubmit(event) {
     event.preventDefault();
-    const { email } = user;
-    console.log(email);
+    loginUser(user);
+    history.push("/");
   }
 
   function handleChange(event) {
