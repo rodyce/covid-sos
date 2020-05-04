@@ -18,10 +18,11 @@ import ChevronLeftIcon from "@material-ui/icons/ChevronLeft";
 import NotificationsIcon from "@material-ui/icons/Notifications";
 
 import { Route, Switch } from "react-router-dom";
-import SignIn from "./SignIn";
+import SignIn from "./SignInPage";
 import CollectionCenterList from "./CollectionCenterList";
 import PageNotFound from "./PageNotFound";
 import MainMenuOptions from "./MainMenuOptions";
+import SignInPage from "./SignInPage";
 
 function Copyright() {
   return (
@@ -236,7 +237,7 @@ export default function Dashboard() {
                 <CollectionCenterList fixedHeightPaper={fixedHeightPaper} />
               )}
             />
-            <Route path="/signin" component={SignIn} />
+            <Route path="/signin" component={SignInPage} />
             <Route component={PageNotFound} />
           </Switch>
           <Box pt={4}>
