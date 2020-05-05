@@ -29,6 +29,7 @@ class Merchandise {
 class Request {
   *beneficiary: Beneficiary
   *status: RequestStatusType
+  *description: string
   carrier: Carrier
   aidPackage: Merchandise[1..*]
   isApproved(): bool
@@ -44,11 +45,18 @@ enum RequestStatusType {
   New
   Approved
   Rejected
+  Delivered
 }
 
-Manager "0..*" -- "1..* centers" CollectionCenter : manages
-CollectionCenter "  1 collectionCenter" -- "0..* products" Merchandise
-Carrier "0..1 carrier" -- Request
-Beneficiary "1 beneficiary" -- Request
+enum GenderType {
+  Male
+  Female
+  Other
+}
+
+Manager "0..*" -- "1..* centers" CollectionCenter : manage >
+CollectionCenter "  1 collectionCenter" -- "0..* products" Merchandise : has >
+Carrier "0..1 carrier" -- Request : delivers >
+Beneficiary "1 beneficiary" -- Request : requests >
 Request x-> "1..*" Merchandise
 @enduml
