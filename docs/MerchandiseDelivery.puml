@@ -1,0 +1,36 @@
+@startuml
+autonumber
+header SOS Ticos
+title Despacho de mercaderia
+actor ManagerCA as "Manager CA" #red
+' The only difference between actor
+'and participant is the drawing
+participant MobileApp
+actor Beneficiario
+collections Carrier
+
+ManagerCA->MobileApp: Click en "beneficiarios"
+MobileApp->ManagerCA: Lista de beneficiarios
+ManagerCA->MobileApp: Escoger beneficiario de lista
+MobileApp->ManagerCA: Visualiza datos del beneficiario
+note left
+nombre, direccion, telefono
+y otros q estan ahi...
+end note
+ManagerCA->Beneficiario: Realizar llamada confirmar necesidades
+Beneficiario->ManagerCA: Confirma Necesidades
+ManagerCA->MobileApp: Digita necesidades
+note left
+Basado en llamada
+con Beneficiario
+end note
+ManagerCA->MobileApp: Click en Guardar
+ManagerCA->ManagerCA: Revisa disponibilidad de productos
+ManagerCA->Carrier: Llama preguntando disponibilidad
+Carrier->ManagerCA: Confirma disponibilidad
+MobileApp->ManagerCA: Muestra transportistas
+ManagerCA->MobileApp: Selecciona transportista
+ManagerCA->Carrier: Entrega paquete
+ManagerCA->MobileApp: Le da guardar
+
+@enduml

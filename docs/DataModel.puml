@@ -1,25 +1,43 @@
 @startuml covid sos datamodel
-class User {
+class Person {
   *email: string
   *name: string
-  *lastName: string
-  *gender: GenderType
   *address: string
   *phone: string
-  roles: RoleType[1..*]
+  province: string
+  canton: string
+  distrito: string
 }
+
+class Beneficiary {
+}
+Person <|-- Beneficiary
+
+class User {
+  roles: RoleType
+}
+
+Person <|-- User
 
 User <|-- Carrier
 User <|-- Manager
-User <|-- Beneficiary
 
 class CollectionCenter {
   *name: string
   *address : string
+  *email: string
+  province: string
+  canton: string
+  distrito: string
+  exactAddress: string
+}
+
+class Manager {
+  *documentId: string
 }
 
 class Merchandise {
-  *arrivalTime*: DateTime
+  *arrivalTime: DateTime
   *collectionCenter: CollectionCenter
   *photo: Image
   description: string
@@ -30,33 +48,28 @@ class Request {
   *beneficiary: Beneficiary
   *status: RequestStatusType
   *description: string
+  *photo: Image
   carrier: Carrier
-  aidPackage: Merchandise[1..*]
-  isApproved(): bool
 }
 
 enum RoleType {
-  Beneficiary
-  Manager
-  Carrier
+  Director = 4
+  Manager = 3
+  Carrier = 2
+  Visitor = 1
 }
 
 enum RequestStatusType {
   New
   Approved
   Rejected
+  InTransit
   Delivered
 }
 
-enum GenderType {
-  Male
-  Female
-  Other
-}
-
-Manager "0..*" -- "1..* centers" CollectionCenter : manage >
+Manager "0..1" -- "1..* centers" CollectionCenter : manage >
 CollectionCenter "  1 collectionCenter" -- "0..* products" Merchandise : has >
 Carrier "0..1 carrier" -- Request : delivers >
+Carrier "0..*" -- "0..1" CollectionCenter : affiliated to >
 Beneficiary "1 beneficiary" -- Request : requests >
-Request x-> "1..*" Merchandise
 @enduml

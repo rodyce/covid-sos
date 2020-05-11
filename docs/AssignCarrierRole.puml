@@ -1,0 +1,25 @@
+@startuml
+autonumber
+header SOS Ticos
+title Asignar Rol de transportista
+actor ManagerCA as "Manager CA" #red
+' The only difference between actor
+'and participant is the drawing
+participant MobileApp
+collections Carrier
+
+ManagerCA->MobileApp: "Click en no-transportistas"
+MobileApp->ManagerCA: Lista de usuarios no-transportistas
+
+ManagerCA->MobileApp: Click en usuario
+MobileApp->ManagerCA: Muestra datos del usuario seleccionado
+
+ManagerCA->MobileApp: Escoge rol de transportista
+note left
+Menu desplegable
+end note
+
+ManagerCA->MobileApp: Click en guardar
+
+
+@enduml
