@@ -4,27 +4,29 @@ class Person {
   *name: string
   *address: string
   *phone: string
+  documentId: string
   province: string
   canton: string
   distrito: string
 }
 
 class Beneficiary {
+  *documentId: string
+  type: BeneficiaryType
 }
-Person <|-- Beneficiary
 
 class User {
-  roles: RoleType
+  role: RoleType
 }
-
 Person <|-- User
 
+User <|-- Beneficiary
 User <|-- Carrier
 User <|-- Manager
 
 class CollectionCenter {
   *name: string
-  *address : string
+  address : string
   *email: string
   province: string
   canton: string
@@ -36,6 +38,10 @@ class Manager {
   *documentId: string
 }
 
+class Carrier {
+  *address : string
+}
+
 class Merchandise {
   *arrivalTime: DateTime
   *collectionCenter: CollectionCenter
@@ -44,11 +50,12 @@ class Merchandise {
   departureTime: DateTime
 }
 
-class Request {
+class AidPackage {
   *beneficiary: Beneficiary
-  *status: RequestStatusType
+  *status: AidPackageStatusType
   *description: string
   *photo: Image
+  *collectionCenter: CollectionCenter
   carrier: Carrier
 }
 
@@ -57,9 +64,10 @@ enum RoleType {
   Manager = 3
   Carrier = 2
   Visitor = 1
+  Beneficiary = 0
 }
 
-enum RequestStatusType {
+enum AidPackageStatusType {
   New
   Approved
   Rejected
@@ -67,9 +75,16 @@ enum RequestStatusType {
   Delivered
 }
 
+enum BeneficiaryType {
+  Critical = 3
+  Accepted = 2
+  Rejected = 1
+}
+
+AidPackage "0..*" -- "1" CollectionCenter
 Manager "0..1" -- "1..* centers" CollectionCenter : manage >
 CollectionCenter "  1 collectionCenter" -- "0..* products" Merchandise : has >
-Carrier "0..1 carrier" -- Request : delivers >
+Carrier "0..1 carrier" -- AidPackage : delivers >
 Carrier "0..*" -- "0..1" CollectionCenter : affiliated to >
-Beneficiary "1 beneficiary" -- Request : requests >
+Beneficiary "1 beneficiary" -- AidPackage : AidPackages >
 @enduml
